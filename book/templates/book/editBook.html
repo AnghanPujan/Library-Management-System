@@ -1,0 +1,37 @@
+{% extends "book/base.html" %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h2 class="mb-4">✏️ Edit Book</h2>
+
+  
+        <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="title" class="form-label">Book Title</label>
+            <input type="text" name="title" id="title" value="{{ book.title }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" name="category" id="category" value="{{ book.category }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" name="author" id="author" value="{{ book.author }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" name="is_available" id="is_available" class="form-check-input" 
+                {% if book.is_available %} checked {% endif %}>
+            <label for="is_available" class="form-check-label">Available</label>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Book</button>
+        {{text}}
+    </form>
+</div>
+{% endblock %}
