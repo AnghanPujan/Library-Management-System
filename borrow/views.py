@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from borrow.borrowForm import borrowFrom
 from book.models import Book, Member
+from datetime import timedelta
 
 
 def borrow(request):
@@ -12,7 +13,7 @@ def borrow(request):
             book_name = form.cleaned_data["book_name"]
             member_name = form.cleaned_data["member_name"]
             issue_date = form.cleaned_data["issue_date"]
-            due_date = form.cleaned_data["due_date"]
+            due_date = issue_date + timedelta(days=15)
             
             try:
                 book = Book.objects.get(title=book_name)
