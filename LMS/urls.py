@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from book.views import allbooks, home, new_author
+from book.views import allbooks, home, new_author, dashboard
 from members.views import all_members
 from borrow.views import all_borrowed, borrow
 from returnBook.views import return_book
@@ -17,5 +17,5 @@ urlpatterns = [
     path('members/',include('members.urls')),
     path('borrow/',borrow),
     path('return/', return_book),
-    path('reports/overdue/', overdue)
+    path('dashboard/', dashboard)
 ]

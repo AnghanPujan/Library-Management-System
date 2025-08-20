@@ -26,7 +26,7 @@ class Book(models.Model):
     is_available = models.BooleanField(default=True)
 
     member = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, blank=True)
-    issue_date = models.DateField(default=date.today, null=True, blank=True)
+    issue_date = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
     return_date = models.DateField(null=True, blank=True)
 
