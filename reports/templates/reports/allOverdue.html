@@ -1,0 +1,29 @@
+{% extends "book/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <!-- Overdue Books Table -->
+  <h3 class="mt-5 mb-3 text-danger">⏰ Overdue Books</h3>
+  <table class="table table-bordered table-striped">
+    <thead class="table-danger">
+      <tr>
+        <th>Book</th>
+        <th>Borrowed By</th>
+        <th>Due Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for overdue in overdue_books %}
+      <tr>
+        <td>{{ overdue.title }}</td>
+        <td>{{ overdue.member.name }}</td>
+        <td>{{ overdue.due_date }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="text-center">No overdue books.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

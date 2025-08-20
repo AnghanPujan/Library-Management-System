@@ -4,9 +4,6 @@ from borrow.borrowForm import borrowFrom
 from book.models import Book, Member
 
 
-def all_borrowed(request):
-    return HttpResponse("<h1>In all borrow page</h1>")
-
 def borrow(request):
     if request.method == "POST":
         form = borrowFrom(request.POST)
@@ -17,19 +14,32 @@ def borrow(request):
             issue_date = form.cleaned_data["issue_date"]
             due_date = form.cleaned_data["due_date"]
             
-            book = get_object_or_404(Book, title=book_name)
-            member = get_object_or_404(Member, name=member_name)
+            try:
+                book = Book.objects.get(title=book_name)
+            except Book.DoesNotExist:
+                return render(request, 'borrow/borrowForm.html', {
+                    'form': form,
+                    'msg': 'Book does not exist.'
+                })
+
+            try:
+                member = Member.objects.get(name=member_name)
+            except Member.DoesNotExist:
+                return render(request, 'borrow/borrowForm.html', {
+                    'form': form,
+                    'msg': 'Member is not registred.'
+                })
 
             if not book.is_available:
                 return render(request, 'borrow/borrowForm.html', {
                     'form': form,
-                    'text': 'Book is not available.'
+                    'msg': 'Book is not available.'
                 })
 
             if member.borrowed_books >= 5:
                 return render(request, 'borrow/borrowForm.html', {
                     'form': form,
-                    'text': 'Member has reached the borrow limit.'
+                    'msg': 'Member has reached the borrow limit.'
                 })
 
             book.issue_date = issue_date

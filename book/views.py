@@ -2,8 +2,6 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from book.bookForms import add_book, add_author
 from book.models import Book, Author, Member
-from borrow.borrowForm import borrowFrom
-from datetime import date
 from django.utils import timezone
 
 def home(request):
@@ -27,17 +25,14 @@ def edit_book(request, id):
     author_name = None
     
     if request.method == "POST":
-        # No form used anymore, getting data directly from POST
         title = request.POST.get("title")
         author_name = request.POST.get("author")
         category_name = request.POST.get("category")
 
-        # Update book attributes
         book.title = title
         book.category = category_name
         book.is_available = request.POST.get("is_available") == "on"
 
-        # Set author
         try:
             book.author = Author.objects.get(name=author_name)
         except Author.DoesNotExist:

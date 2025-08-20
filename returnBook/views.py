@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from returnBook.returnForm import returnFrom
 from book.models import Book, Member
 from datetime import datetime
@@ -11,15 +10,23 @@ def return_book(request):
             book_name = form.cleaned_data["book_name"]
             member_name = form.cleaned_data["member_name"]
             return_date = form.cleaned_data["return_date"] 
-            
-            book = get_object_or_404(Book, title=book_name)
-            member = get_object_or_404(Member, name=member_name)
-
-          
+            try:
+                book = Book.objects.get(title=book_name)
+            except Book.DoesNotExist:
+                return render(request, 'borrow/borrowForm.html', {
+                    'form': form,
+                    'msg': 'Book does not from our store.'
+                })
+            try:
+                member = Member.objects.get(name=member_name)
+            except Member.DoesNotExist:
+                return render(request, 'borrow/borrowForm.html', {
+                    'form': form,
+                    'msg': 'Member is not registed.'
+                })
             book.is_available = True
             member.borrowed_books -= 1  
             book.return_date = return_date
-
            
             FINE_PER_DAY = 15 
             due_date = book.due_date 

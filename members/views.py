@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from members.memberForms import add_member
+from book.models import Member
 
 def all_members(request):
-    return HttpResponse("<h1>In all member page<h1>")
+    all_members = Member.objects.all()
+    context = {
+        'members': all_members,
+    }
+    return render(request, "members/allMembers.html", context=context)
 
 def new_member(request):
     if request.method == "POST":
